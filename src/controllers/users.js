@@ -46,7 +46,25 @@ const getUser = async (req, res) => {
 }
 
 const editUser = async (req, res) => {
+    const { nome, email, nome_loja, senha } = req.body;
+    const { id } = req.usuario;
 
+    if(!nome) return res.status(400).json("O nome precisa ser informado.");
+    if(!email) return res.status(400).json("O email precisa ser informado.");
+    if(!nome_loja) return res.status(400).json("O nome da loja precisa ser informado.");
+    if(!senha) return res.status(400).json("A senha precisa ser informada.");
+
+    try {
+        const hash = (await pwd.hash(Buffer.from(senha))).toString("hex");
+
+        const user = await connection.query("UPDATE usuarios SET nome = $1, email = $2, nome_loja = $3, senha = $4 WHERE id = $5", [nome, email, nome_loja, hash, id]);
+        if(!user.rowCount)
+            return res.status(400).json("Não foi possível editar o usuário.");
+        
+        return res.status(200).json("Usuário atualizado com sucesso!");   
+    } catch(error) {
+        return res.status(400).json(error.message);
+    }
 }
 
 module.exports = { registerUser, getUser, editUser }
