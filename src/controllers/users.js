@@ -32,6 +32,16 @@ const registerUser = async (req, res) => {
 }
 
 const getUser = async (req, res) => {
+    const { id } = req.usuario;
+    
+    try {
+        const { rows } = await connection.query("SELECT * FROM usuarios WHERE id = $1", [id]);
+
+        const {senha, ...user } = rows[0];
+        return res.status(200).json(user);
+    } catch(error){
+        return res.status(400).json(error.message);
+    }
 
 }
 
