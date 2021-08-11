@@ -12,6 +12,6 @@ routes.use(authLogin);
 
 //users
 routes.get("/perfil", users.getUser);
-routes.put("/perfil", users.editUser);
+routes.put("/perfil", users.updateUser);
 
 module.exports = routes;

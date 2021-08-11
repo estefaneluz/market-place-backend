@@ -45,7 +45,7 @@ const getUser = async (req, res) => {
 
 }
 
-const editUser = async (req, res) => {
+const updateUser = async (req, res) => {
     const { nome, email, nome_loja, senha } = req.body;
     const { id } = req.usuario;
 
@@ -67,4 +67,4 @@ const editUser = async (req, res) => {
     }
 }
 
-module.exports = { registerUser, getUser, editUser }
+module.exports = { registerUser, getUser, updateUser }
