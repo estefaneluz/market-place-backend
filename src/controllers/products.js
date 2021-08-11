@@ -42,7 +42,18 @@ const registerProduct = async (req, res) => {
 } 
 
 const getProduct = async (req, res) => {
-
+    const { id: user_id } = req.usuario; 
+    const { id } = req.params;
+    try {
+        const query = `SELECT p.id, u.nome as usuario, p.* FROM produtos p JOIN usuarios u ON p.id = $1 AND p.usuario_id = $2`
+        const product = await connection.query(query, [id, user_id]);
+        if(!product.rowCount) 
+            return res.status(404).json("Não foi possível encontrar o produto.");
+        
+        return res.status(200).json(product.rows[0]);
+    } catch(error){
+        return res.status(400).json(error.message);
+    }
 }
 
 const updateProduct = async (req, res) => {
