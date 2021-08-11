@@ -55,6 +55,11 @@ const updateUser = async (req, res) => {
     if(!senha) return res.status(400).json("A senha precisa ser informada.");
 
     try {
+
+        const { rowCount } = await connection.query("SELECT * FROM usuarios WHERE email = $1 and id != $2", [email, id]);
+        if(rowCount) 
+            return res.status(400).json("Esse e-mail já está cadastrado.");
+
         const hash = (await pwd.hash(Buffer.from(senha))).toString("hex");
 
         const user = await connection.query("UPDATE usuarios SET nome = $1, email = $2, nome_loja = $3, senha = $4 WHERE id = $5", [nome, email, nome_loja, hash, id]);
