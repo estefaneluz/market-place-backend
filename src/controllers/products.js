@@ -57,7 +57,31 @@ const getProduct = async (req, res) => {
 }
 
 const updateProduct = async (req, res) => {
+    const { id: user_id } = req.usuario;
+    const { id } = req.params;
+    const { nome, estoque, categoria, preco, descricao, imagem } = req.body;
 
+    if(!nome) return res.status(400).json("É necessário informar o nome do produto.");
+    if(!estoque) return res.status(400).json("É necessário informar o estoque.");
+    if(!preco) return res.status(400).json("É necessário informar o preço.");
+    if(!descricao) return res.status(400).json("É necessário informar a descrição.");
+
+    try {
+        const { rowCount } = await connection.query("SELECT * FROM produtos WHERE id = $1 AND usuario_id = $2", [id, user_id]);
+        if(!rowCount) 
+            return res.status(404).json("Não foi possível encontar o produto.");
+
+        const query = `UPDATE produtos SET nome = $1, estoque = $2, categoria = $3, 
+        preco = $4, descricao = $5, imagem = $6 WHERE id = $7 AND usuario_id = $8`
+        const produto = await connection.query(query, [nome, estoque, categoria, preco, descricao, imagem, id, user_id]);
+
+        if(!produto.rowCount) 
+            return res.status(400).json("Não foi possível atualizar o produto.");
+        
+        return res.status(200).json("Produto atualizado com sucesso!");
+    } catch(error) {
+        return res.status(400).json(error.message);
+    }
 }
 
 const deleteProduct = async (req, res) => {
