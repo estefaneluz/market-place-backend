@@ -9,9 +9,22 @@ const registerUser = async (req, res) => {
     if(!nome) return res.status(400).json("O nome precisa ser informado.");
     if(!email) return res.status(400).json("O e-mail precisa ser informado.");
     if(!senha) return res.status(400).json("A senha precisa ser informada.");
-    if(!nome_loja) return res.status(400).json("O nome da loja precisa ser informada");
+    if(!nome_loja) return res.status(400).json("O nome da loja precisa ser informado.");
 
     try {
+
+        const uniqueEmail = await connection.query("SELECT * FROM usuarios WHERE email = $1", [email]);
+
+        if(uniqueEmail.rowCount) 
+            return res.status(400).json("E-mail já cadastrado.");
+        
+        const hash = (await pwd.hash(Buffer.from(senha))).toString("hex");
+        const user = await connection.query("INSERT INTO usuarios(nome, email, nome_loja, senha) VALUES($1, $2, $3, $4)", [nome, email, nome_loja, hash]);
+        
+        if(!user.rowCount) 
+            return res.status(400).json("Não foi possível cadastrar o usuário.");
+
+        return res.status(200).json("Usuário cadastrado com sucesso.");
 
     } catch(error){
         return res.status(400).json(error.message);
