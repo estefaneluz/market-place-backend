@@ -1,7 +1,22 @@
 const connection = require("../connection");
 
 const getAllProducts = async (req, res) => {
+    const { id } = req.usuario; 
+    const { categoria } = req.query;
+    try {
+        const query = `SELECT p.id, u.nome as usuario, p.* FROM produtos p JOIN usuarios u ON p.usuario_id = $1`
+        let { rows: produtos } = await connection.query(query, [id]);
 
+        if(categoria){
+            produtos = produtos.filter(
+                produto => produto.categoria.toLowerCase() === categoria.toLowerCase()
+            );
+        }
+
+        return res.status(200).json(produtos);
+    } catch(error){
+        return res.status(400).json(error.message);
+    }
 }
 
 const registerProduct = async (req, res) => {
