@@ -19,7 +19,7 @@ routes.put("/perfil", users.updateUser);
 routes.get("/produtos", products.getAllProducts);
 routes.get("/produtos/:id", products.getProduct);
 routes.post("/produtos", products.registerProduct);
-routes.put("/produtos", products.updateProduct);
-routes.delete("/produtos", products.deleteProduct);
+routes.put("/produtos/:id", products.updateProduct);
+routes.delete("/produtos/:id", products.deleteProduct);
 
 module.exports = routes;
