@@ -8,7 +8,7 @@ CREATE TABLE IF NOT EXISTS usuarios(
   senha text NOT NULL
 );
 
-CREATE TABLE IF NOT EXISTS produto(
+CREATE TABLE IF NOT EXISTS produtos(
   id serial PRIMARY KEY,
   usuario_id INT NOT NULL,
   nome varchar(100) NOT NULL,
