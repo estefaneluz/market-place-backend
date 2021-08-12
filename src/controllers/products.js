@@ -2,14 +2,26 @@ const connection = require("../connection");
 
 const getAllProducts = async (req, res) => {
     const { id } = req.usuario; 
-    const { categoria } = req.query;
+    const { categoria, precoInicial, precoFinal} = req.query;
     try {
-        const query = `SELECT p.id, u.nome as usuario, p.* FROM produtos p JOIN usuarios u ON p.usuario_id = $1`
+        const query = `SELECT * FROM produtos WHERE usuario_id = $1`
         let { rows: produtos } = await connection.query(query, [id]);
 
-        if(categoria){
+        if(categoria) {
             produtos = produtos.filter(
                 produto => produto.categoria.toLowerCase() === categoria.toLowerCase()
+            );
+        }
+
+        if(precoInicial) {
+            produtos = produtos.filter(
+                produto => produto.preco >= parseInt(precoInicial)
+            );
+        }
+
+        if(precoFinal) { 
+            produtos = produtos.filter(
+                produto => produto.preco <= parseInt(precoFinal)
             );
         }
 
@@ -45,7 +57,7 @@ const getProduct = async (req, res) => {
     const { id: user_id } = req.usuario; 
     const { id } = req.params;
     try {
-        const query = `SELECT p.id, u.nome as usuario, p.* FROM produtos p JOIN usuarios u ON p.id = $1 AND p.usuario_id = $2`
+        const query = `SELECT * FROM produtos WHERE id = $1 AND usuario_id = $2`
         const product = await connection.query(query, [id, user_id]);
         if(!product.rowCount) 
             return res.status(404).json("Não foi possível encontrar o produto.");
