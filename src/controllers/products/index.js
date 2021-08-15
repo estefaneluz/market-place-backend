@@ -1,4 +1,4 @@
-const connection = require("../connection");
+const connection = require("../../connection");
 
 const getAllProducts = async (req, res) => {
     const { id } = req.usuario; 

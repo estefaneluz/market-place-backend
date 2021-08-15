@@ -11,11 +11,9 @@ routes.post("/cadastro", users.registerUser);
 
 routes.use(authLogin);
 
-//users
 routes.get("/perfil", users.getUser);
 routes.put("/perfil", users.updateUser);
 
-//products 
 routes.get("/produtos", products.getAllProducts);
 routes.get("/produtos/:id", products.getProduct);
 routes.post("/produtos", products.registerProduct);

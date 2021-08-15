@@ -1,7 +1,7 @@
-const connection = require("../connection");
+const connection = require("../../connection");
 const securePassword = require("secure-password");
 const jwt = require("jsonwebtoken");
-const jwtSecret = require("../jwt_secret");
+const jwtSecret = require("../../jwt_secret");
 
 const pwd = securePassword();
 

@@ -1,4 +1,4 @@
-const connection = require("../connection");
+const connection = require("../../connection");
 const securePassword = require("secure-password");
 
 const pwd = securePassword();
