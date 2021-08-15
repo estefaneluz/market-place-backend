@@ -2,7 +2,7 @@
 
 # Desafio Módulo 3 - Backend
 
-[VOLTAR PARA SUMÁRIO](https://github.com/cubos-academy/desafio-modulo-03)
+[Confira também o projeto de Front-end](https://github.com/estefaneluz/market-place);
 
 ## Back-end
 
